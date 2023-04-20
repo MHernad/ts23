@@ -1,0 +1,18 @@
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var swagger_ui_express_1 = require("swagger-ui-express");
+var swaggerDocument = require("./swagger");
+var dbConnection_1 = require("./database/dbConnection");
+var rutasAlumnos_1 = require("./rutas/rutasAlumnos");
+var rutasMaterias_1 = require("./rutas/rutasMaterias");
+var app = (0, express_1["default"])();
+dbConnection_1.conexion.getInstance().connection.connect();
+app.use(express_1["default"].json());
+app.use('/api-docs', swagger_ui_express_1["default"].serve, swagger_ui_express_1["default"].setup(swaggerDocument));
+app.get('/', function (_req, _res) { return _res.send('Bienvenido a mi API REST!'); });
+app.use("/alumnos", rutasAlumnos_1.rutasAlumnos);
+app.use("/materias", rutasMaterias_1.rutasMaterias);
+app.use("/materias", rutasMaterias_1.rutasMaterias);
+app.listen(3000, function () { });
+dbConnection_1.conexion.getInstance().connection.end();
