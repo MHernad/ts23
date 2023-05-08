@@ -2,7 +2,8 @@ import { dbAlumnos } from "../database/dbAlumnos";
 import { Router } from "express";
 export const rutasAlumnos = Router();
 
-rutasAlumnos.get("/", (_req, _res) => {
+
+rutasAlumnos.get("/",(_req, _res) => {
     dbAlumnos.alumnosGet().then((alumno) => _res.json(alumno))
         .catch((err) => _res.json({ "msg": err.message }))
 })

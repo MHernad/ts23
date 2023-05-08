@@ -1,11 +1,9 @@
 import express from "express"
-import swaggerUi from 'swagger-ui-express';
-//import * as swaggerDocument from "./swagger";
-import { conexion } from './database/dbConnection';
 import { rutasAlumnos } from "./rutas/rutasAlumnos";
 import { rutasMaterias } from "./rutas/rutasMaterias";
-import mysql, { RowDataPacket } from "mysql2"
 import { rutasPersonalizadas } from "./rutas/rutasPersonalizadas";
+import { rutasLogin } from "./rutas/rutasLogin";
+import { middleware } from "./middleware/auth";
 
 const app: express.Application = express();
 
@@ -14,8 +12,9 @@ app.use(express.json());
 
 app.get('/', (_req , _res) => _res.send('Bienvenido a mi API REST!'));
 
-app.use("/alumnos", rutasAlumnos);
-app.use("/materias", rutasMaterias);
-app.use("/materias", rutasPersonalizadas);
+app.use("/alumnos", middleware.authentication, rutasAlumnos);
+app.use("/materias", middleware.authentication, rutasMaterias);
+app.use("/materias", middleware.authentication, rutasPersonalizadas);
+app.use("/users", rutasLogin);
 
 app.listen(3000, () => {})
